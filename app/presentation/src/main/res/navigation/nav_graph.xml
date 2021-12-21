@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/LoginFragment">
+
+    <fragment
+        android:id="@+id/LoginFragment"
+        android:name="com.example.presentation.fragments.LoginFragment"
+        android:label="@string/first_fragment_label">
+
+        <action
+            android:id="@+id/action_LoginFragment_to_MainFragment"
+            app:destination="@id/MainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MainFragment"
+        android:name="com.example.presentation.fragments.MainFragment"
+        android:label="@string/second_fragment_label">
+
+        <action
+            android:id="@+id/action_MainFragment_to_videoViewActivity"
+            app:destination="@id/videoViewActivity" />
+        <action
+            android:id="@+id/action_MainFragment_to_userProfileFragment2"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_MainFragment_to_visualAcuityFragment"
+            app:destination="@id/visualAcuityFragment" />
+        <action
+            android:id="@+id/action_MainFragment_to_stereoscopicAcuityFragment"
+            app:destination="@id/stereoscopicAcuityFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/videoViewActivity"
+        android:name="com.example.presentation.VideoViewActivity"
+        android:label="VideoViewActivity" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.presentation.fragments.UserProfileFragment"
+        android:label="UserProfileFragment" />
+    <fragment
+        android:id="@+id/visualAcuityFragment"
+        android:name="com.example.presentation.fragments.VisualAcuityFragment"
+        android:label="fragment_visual_acuity"
+        tools:layout="@layout/fragment_visual_acuity" >
+        <action
+            android:id="@+id/action_visualAcuityFragment_to_visualAcuityTestFragment"
+            app:destination="@id/visualAcuityTestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visualAcuityTestFragment"
+        android:name="com.example.presentation.fragments.VisualAcuityTestFragment"
+        android:label="fragment_visual_acuity_test"
+        tools:layout="@layout/fragment_visual_acuity_test" />
+    <fragment
+        android:id="@+id/stereoscopicAcuityFragment"
+        android:name="com.example.presentation.fragments.StereoscopicAcuityFragment"
+        android:label="fragment_stereoscopic_acuity"
+        tools:layout="@layout/fragment_stereoscopic_acuity" >
+        <action
+            android:id="@+id/action_stereoscopicAcuityFragment_to_stereoscopicAcuityTestFragment"
+            app:destination="@id/stereoscopicAcuityTestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stereoscopicAcuityTestFragment"
+        android:name="com.example.presentation.fragments.StereoscopicAcuityTestFragment"
+        android:label="fragment_stereoscopic_acuity_test"
+        tools:layout="@layout/fragment_stereoscopic_acuity_test" />
+</navigation>

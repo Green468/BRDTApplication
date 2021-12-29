@@ -3,26 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:screenOrientation="landscape"
+    android:background="@color/black">
+
     <Chronometer
         android:id="@+id/chrono"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/anchor"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
-    <FrameLayout
+        android:layout_centerInParent="true" />
+
+    <androidx.camera.view.PreviewView
         android:id="@+id/cameraview1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/anchor"/>
-    <FrameLayout
+        android:layout_toLeftOf="@+id/anchor"
+        android:layout_margin="10dp"/>
+
+    <androidx.camera.view.PreviewView
         android:id="@+id/cameraview2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/anchor"/>
+        android:layout_toRightOf="@+id/anchor"
+        android:layout_margin="10dp"/>
 
 </RelativeLayout>

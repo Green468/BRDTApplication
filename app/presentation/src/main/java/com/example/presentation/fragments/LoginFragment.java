@@ -34,8 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginFragment extends Fragment {
-
-    private FragmentLoginBinding binding;
+    FragmentLoginBinding binding;
     private Network network;
     public int issucess = 0;
     public String ssid;
@@ -48,7 +47,6 @@ public class LoginFragment extends Fragment {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -64,7 +62,8 @@ public class LoginFragment extends Fragment {
                         // Sử dụng GSON cho việc parse và maps JSON data tới Object
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-//                // Khởi tạo các cuộc gọi cho Retrofit 2.0
+
+                // Khởi tạo các cuộc gọi cho Retrofit 2.0
                 StackOverflowAPI stackOverflowAPI = retrofit.create(StackOverflowAPI.class);
 
                 Call<LoginResponse> call = stackOverflowAPI.login("user0","abc123");
@@ -87,13 +86,13 @@ public class LoginFragment extends Fragment {
                         }
 
                     }
-
+//
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
                         Toast.makeText(getActivity().getApplicationContext(), "Connecting Fail",Toast.LENGTH_SHORT);
                     }
                 });
-
+//
                 if(issucess==1){
                     Call<Video> call1 = stackOverflowAPI.loadVideo("0","10",ssid);
                     call1.enqueue(new Callback<Video>() {
@@ -114,32 +113,32 @@ public class LoginFragment extends Fragment {
                         }
                     });
                 }
-
-
-
-//                // Khởi tạo các cuộc gọi cho Retrofit 2.0
-//                StackOverflowAPI stackOverflowAPI = retrofit.create(StackOverflowAPI.class);
 //
-//                Call<Users> call1 = stackOverflowAPI.isValidUser("abc123");
-                // Cuộc gọi bất đồng bọ (chạy dưới background)
-//                call1.enqueue(new Callback<StackOverflowQuestions>() {
-//                    @Override
-//                    public void onResponse(Call<StackOverflowQuestions> call, Response<StackOverflowQuestions> response) {
-////                        if (!response.isSuccessful()) {
-////                            Log.i("Response:",String.valueOf(response.code()));
-////                            return;
-////                        }
 //
-//                        Log.i("Response:",response.toString());
-//                        NavHostFragment.findNavController(LoginFragment.this)
-//                                .navigate(R.id.action_LoginFragment_to_MainFragment);
-//                    }
 //
-//                    @Override
-//                    public void onFailure(Call<StackOverflowQuestions> call, Throwable t) {
-//
-//                    }
-//                });
+////                // Khởi tạo các cuộc gọi cho Retrofit 2.0
+////                StackOverflowAPI stackOverflowAPI = retrofit.create(StackOverflowAPI.class);
+////
+////                Call<Users> call1 = stackOverflowAPI.isValidUser("abc123");
+//                // Cuộc gọi bất đồng bọ (chạy dưới background)
+////                call1.enqueue(new Callback<StackOverflowQuestions>() {
+////                    @Override
+////                    public void onResponse(Call<StackOverflowQuestions> call, Response<StackOverflowQuestions> response) {
+//////                        if (!response.isSuccessful()) {
+//////                            Log.i("Response:",String.valueOf(response.code()));
+//////                            return;
+//////                        }
+////
+////                        Log.i("Response:",response.toString());
+////                        NavHostFragment.findNavController(LoginFragment.this)
+////                                .navigate(R.id.action_LoginFragment_to_MainFragment);
+////                    }
+////
+////                    @Override
+////                    public void onFailure(Call<StackOverflowQuestions> call, Throwable t) {
+////
+////                    }
+////                });
             }
         });
     }

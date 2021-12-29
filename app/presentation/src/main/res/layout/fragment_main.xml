@@ -9,27 +9,36 @@
         android:id="@+id/video_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bt_Startview"
-        app:layout_constraintEnd_toStartOf="@id/iotd_picker"
+        app:layout_constraintBottom_toTopOf="@id/iotd_picker"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints">
 
     </ListView>
-
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="IOTD"
+    app:layout_constraintTop_toBottomOf="@id/video_list"
+    />
     <NumberPicker
         android:id="@+id/iotd_picker"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/bt_Startview"
+        app:layout_constraintTop_toBottomOf="@id/video_list"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/bt_Startview"
-        android:text="Start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
+        android:text="Start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

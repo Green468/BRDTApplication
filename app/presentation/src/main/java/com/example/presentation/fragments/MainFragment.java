@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +23,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.presentation.R;
 import com.example.presentation.databinding.FragmentMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.io.File;
 
@@ -35,6 +38,8 @@ public class MainFragment extends Fragment {
     public ArrayAdapter<String> adapter;
     String link,iotd;
     String[] listItem;
+
+    BottomNavigationView bottomNavigationView;
 
     public static MainFragment newInstance(){
         MainFragment fragment = new MainFragment();
@@ -56,6 +61,9 @@ public class MainFragment extends Fragment {
         picker.setMaxValue(6);
         picker.setMinValue(0);
         picker.setDisplayedValues(pickerVals);
+
+
+
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
         try {
             File directory = new File(path);
@@ -80,8 +88,6 @@ public class MainFragment extends Fragment {
             Log.e("Files", "Folder not found:");
         }
 
-
-
         videolist.setAdapter(adapter);
         videolist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -92,6 +98,7 @@ public class MainFragment extends Fragment {
                 Log.i("Select:",link);
             }
         });
+
 
         return binding.getRoot();
 
@@ -110,6 +117,8 @@ public class MainFragment extends Fragment {
                 Log.i("Mainview:","startvideo");
             }
         });
+        bottomNavigationView =  (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
 
     }
 

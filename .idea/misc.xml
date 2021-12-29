@@ -7,6 +7,7 @@
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/drawable/bg_gradient.xml" value="0.2203125" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/drawable/splash_background.xml" value="0.2203125" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/activity_camera_view.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/activity_mainoneview.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/content_main.xml" value="0.20520833333333333" />
@@ -18,6 +19,7 @@
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/fragment_videoview.xml" value="0.1" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/fragment_visual_acuity_test.xml" value="0.18020833333333333" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/layout/greeting_screen.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/menu/bottom_navigation_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/presentation/src/main/res/menu/menu_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/kevin/AndroidStudioProjects/BRDTApplication/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />

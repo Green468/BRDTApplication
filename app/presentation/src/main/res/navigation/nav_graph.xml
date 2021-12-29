@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_LoginFragment_to_MainFragment"
             app:destination="@id/MainFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_cameraViewFragment"
+            app:destination="@id/cameraViewFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/MainFragment"
@@ -31,6 +37,9 @@
         <action
             android:id="@+id/action_MainFragment_to_stereoscopicAcuityFragment"
             app:destination="@id/stereoscopicAcuityFragment" />
+        <action
+            android:id="@+id/action_MainFragment_to_cameraViewFragment"
+            app:destination="@id/cameraViewFragment" />
     </fragment>
     <activity
         android:id="@+id/videoViewActivity"
@@ -68,4 +77,8 @@
         android:name="com.example.presentation.fragments.StereoscopicAcuityTestFragment"
         android:label="fragment_stereoscopic_acuity_test"
         tools:layout="@layout/fragment_stereoscopic_acuity_test" />
+    <fragment
+        android:id="@+id/cameraViewFragment"
+        android:name="com.example.presentation.fragments.CameraViewFragment"
+        android:label="CameraViewFragment" />
 </navigation>

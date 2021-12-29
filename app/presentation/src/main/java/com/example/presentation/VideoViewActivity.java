@@ -277,4 +277,10 @@ public class VideoViewActivity extends AppCompatActivity {
             Log.e("TAG", "Error : " + e.toString());
         }
     }
+
+    @Override
+    protected void onPause() {
+        exoPlayer.stop();
+        super.onPause();
+    }
 }

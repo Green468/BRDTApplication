@@ -22,7 +22,6 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState    ) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 //        binding = FragmentUserprofileBinding.inflate(inflater, container, false);
         return inflater.inflate(R.layout.fragment_userprofile, container, false);

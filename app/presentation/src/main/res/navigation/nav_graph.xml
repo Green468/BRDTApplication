@@ -13,12 +13,6 @@
         <action
             android:id="@+id/action_LoginFragment_to_MainFragment"
             app:destination="@id/MainFragment" />
-        <action
-            android:id="@+id/action_LoginFragment_to_cameraViewFragment"
-            app:destination="@id/cameraViewFragment" />
-        <action
-            android:id="@+id/action_LoginFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/MainFragment"
@@ -34,9 +28,6 @@
         <action
             android:id="@+id/action_MainFragment_to_visualAcuityFragment"
             app:destination="@id/visualAcuityFragment" />
-        <action
-            android:id="@+id/action_MainFragment_to_stereoscopicAcuityFragment"
-            app:destination="@id/stereoscopicAcuityFragment" />
         <action
             android:id="@+id/action_MainFragment_to_cameraViewFragment"
             app:destination="@id/cameraViewFragment" />
@@ -63,20 +54,6 @@
         android:name="com.example.presentation.fragments.VisualAcuityTestFragment"
         android:label="fragment_visual_acuity_test"
         tools:layout="@layout/fragment_visual_acuity_test" />
-    <fragment
-        android:id="@+id/stereoscopicAcuityFragment"
-        android:name="com.example.presentation.fragments.StereoscopicAcuityFragment"
-        android:label="fragment_stereoscopic_acuity"
-        tools:layout="@layout/fragment_stereoscopic_acuity" >
-        <action
-            android:id="@+id/action_stereoscopicAcuityFragment_to_stereoscopicAcuityTestFragment"
-            app:destination="@id/stereoscopicAcuityTestFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/stereoscopicAcuityTestFragment"
-        android:name="com.example.presentation.fragments.StereoscopicAcuityTestFragment"
-        android:label="fragment_stereoscopic_acuity_test"
-        tools:layout="@layout/fragment_stereoscopic_acuity_test" />
     <fragment
         android:id="@+id/cameraViewFragment"
         android:name="com.example.presentation.fragments.CameraViewFragment"

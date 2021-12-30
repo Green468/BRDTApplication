@@ -9,6 +9,20 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="Select Test level" />
+
+    <TextView
+        android:id="@+id/txtvatintro"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:text="qưeftwdgfguhdflkgh" />
+    <Button
+        android:id="@+id/btvatstart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:layout_gravity="center"/>
+
 
 </FrameLayout>

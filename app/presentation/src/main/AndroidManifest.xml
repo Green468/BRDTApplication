@@ -15,7 +15,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BRDTApplication">
+        android:theme="@style/Theme.BRDTApplication"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
+
+        >
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">

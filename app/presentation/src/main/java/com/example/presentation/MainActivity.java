@@ -13,13 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.presentation.databinding.ActivityMainBinding;
 import com.example.presentation.fragments.CameraViewFragment;
+import com.example.presentation.fragments.LoginFragment;
 import com.example.presentation.fragments.MainFragment;
 import com.example.presentation.fragments.UserProfileFragment;
+import com.example.presentation.fragments.VisualAcuityFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -42,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+
         setContentView(binding.getRoot());
 
 //        setSupportActionBar(binding.toolbar);
@@ -63,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
+                binding=null;
+
                 switch (item.getItemId()){
                     case R.id.page_1:{
                         displayView(1);
@@ -70,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.page_2:{
                         displayView(2);
+
                         break;
 
                     }
@@ -151,6 +163,12 @@ public class MainActivity extends AppCompatActivity {
                 mFragment = UserProfileFragment.newInstance();
                 break;
             case 2:
+                mFragment = VisualAcuityFragment.newInstance();
+                break;
+            case 3:
+                mFragment = CameraViewFragment.newInstance();
+                break;
+            case 4:
                 mFragment = CameraViewFragment.newInstance();
                 break;
             default:
@@ -160,17 +178,26 @@ public class MainActivity extends AppCompatActivity {
 
         if (mFragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main, mFragment).commit();
+//            fragmentManager.beginTransaction()
+//                    .add(R.id.nav_host_fragment_content_main, mFragment).commit();
                 androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_main, mFragment);
                 fragmentTransaction.commit();
-
-
-
         } else {
             Log.e("MainActivity", "Error in creating fragment");
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        binding=null;
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        binding=null;
+        super.onBackPressed();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.presentation.fragments;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class LoginFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -78,13 +80,11 @@ public class LoginFragment extends Fragment {
                         {
                               Log.i("Response:",response.toString());
                             Toast.makeText(getActivity().getApplicationContext(), "Successfully Connected",Toast.LENGTH_SHORT);
-
                             issucess = 1;
                             ssid = response.body().getSsid();
                             NavHostFragment.findNavController(LoginFragment.this)
                                     .navigate(R.id.action_LoginFragment_to_MainFragment);
                         }
-
                     }
 //
                     @Override

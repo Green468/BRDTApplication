@@ -3,12 +3,15 @@ package com.example.presentation.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.presentation.R;
+import com.example.presentation.databinding.FragmentVisualAcuityBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +20,8 @@ import com.example.presentation.R;
  */
 public class VisualAcuityFragment extends Fragment {
 
+    FragmentVisualAcuityBinding binding;
+    Button btvatstart;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,6 +53,11 @@ public class VisualAcuityFragment extends Fragment {
         return fragment;
     }
 
+    public static Fragment newInstance() {
+        VisualAcuityFragment fragment = new VisualAcuityFragment();
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +70,29 @@ public class VisualAcuityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentVisualAcuityBinding.inflate(inflater, container, false);
+        btvatstart = binding.btvatstart;
+        btvatstart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment mFragment = VisualAcuityTestFragment.newInstance();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment_content_main, mFragment).commit();
+//                androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, mFragment);
+//                fragmentTransaction.commit();
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_visual_acuity, container, false);
+        return binding.getRoot();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        binding = null;
+        super.onDestroy();
     }
 }

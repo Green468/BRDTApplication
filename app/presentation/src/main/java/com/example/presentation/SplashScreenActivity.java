@@ -18,7 +18,13 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.greeting_screen);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -33,8 +39,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         }, 1000);
 //        startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
 //        finish();
-
-
-
+        
     }
 }

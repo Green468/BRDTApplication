@@ -55,12 +55,12 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState    ) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = FragmentMainBinding.inflate(inflater, container, false);
-        picker = binding.iotdPicker;
+//        picker = binding.iotdPicker;
         videolist = binding.videoList;
 
-        picker.setMaxValue(6);
-        picker.setMinValue(0);
-        picker.setDisplayedValues(pickerVals);
+//        picker.setMaxValue(6);
+//        picker.setMinValue(0);
+//        picker.setDisplayedValues(pickerVals);
 
 
 
@@ -94,7 +94,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 link = (String) parent.getItemAtPosition(position);
-                iotd = pickerVals[picker.getValue()];
+//                iotd = pickerVals[picker.getValue()];
                 Log.i("Select:",link);
             }
         });

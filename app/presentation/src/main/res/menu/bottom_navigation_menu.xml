@@ -2,21 +2,21 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/User"/>
+        android:icon="@drawable/mainbrain"
+        android:title="@string/Main"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/scale"
         android:title="@string/Test"/>
     <item
         android:id="@+id/page_3"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/plan"
         android:title="@string/Timetable"/>
-    <item
-        android:id="@+id/page_4"
-        android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/Setting"/>
+<!--    <item-->
+<!--        android:id="@+id/page_4"-->
+<!--        android:enabled="true"-->
+<!--        android:icon="@drawable/ic_launcher_background"-->
+<!--        android:title="@string/Setting"/>-->
 </menu>

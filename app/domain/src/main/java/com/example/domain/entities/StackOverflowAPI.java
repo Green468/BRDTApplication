@@ -1,6 +1,7 @@
 package com.example.domain.entities;
 
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,10 +19,13 @@ public interface StackOverflowAPI {
     //login API
     @POST("/api/v1/login")
     @FormUrlEncoded
-    Call<LoginResponse> login(@Field("user") String username,
-                     @Field("password") String password);
+    Call<LoginResponse> login(@Field("user") String username,@Field("password") String password);
     //load video API
     @POST("/api/v1/videoList")
     @FormUrlEncoded
     Call<Video> loadVideo(@Field("start_index") String stid,@Field("count") String cnt,@Field("access_token") String ssid);
+    //load video API
+    @POST("/api/v1/watchedVideos")
+    @FormUrlEncoded
+    Call<ResponseBody> getVideolist(@Field("user") String user, @Field("start_index") String stid, @Field("count") String cnt);
 }

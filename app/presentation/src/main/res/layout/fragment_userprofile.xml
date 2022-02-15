@@ -3,15 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp">
     <ImageView
     android:id="@+id/imguser"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
-    android:src="@drawable/ic_launcher_background"
+    android:layout_margin="40dp"
+    android:src="@drawable/usericon"
     tools:ignore="MissingConstraints" />
-
+    <TextView
+        android:id="@+id/txttreatment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Treatmetn Process:"
+        app:layout_constraintTop_toBottomOf="@+id/imguser"
+        tools:ignore="MissingConstraints"
+        android:layout_margin="5dp"/>
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txttreatment"
+        android:layout_margin="5dp"
+        android:progress="50"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+    />
     <ListView
         android:id="@+id/lstuser"
         android:layout_width="match_parent"

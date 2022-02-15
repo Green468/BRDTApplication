@@ -1,7 +1,16 @@
 package com.example.presentation.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -9,22 +18,32 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.presentation.R;
-import com.example.presentation.databinding.FragmentMainBinding;
 import com.example.presentation.databinding.FragmentVisualAcuityTestBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -48,6 +67,15 @@ public class VisualAcuityTestFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     public int cnt=0;
+    static int RECOGNIZER_RESULT = 1;
+    public static final Integer RecordAudioRequestCode = 1;
+
+    private SpeechRecognizer speechRecognizer;
+    public Intent speechIntent;
+    //test variable
+    Integer s =0, sz = 0,d = 0;
+
+    ArrayList<String> reply;
 //    Drawable iml = ContextCompat.getDrawable(getContext(),R.drawable.left);
 //    Drawable imr = ContextCompat.getDrawable(getContext(),R.drawable.left);
 //    Drawable imu = ContextCompat.getDrawable(getContext(),R.drawable.left);
@@ -66,7 +94,10 @@ public class VisualAcuityTestFragment extends Fragment {
     Chronometer chrom;
     BottomNavigationView bottomNavigationView;
     List<String> iconlist = Arrays.asList("left","right","up","down");
-    public ProgressBar progressBar1,progressBar2 ;
+    List<String> sidelist = Arrays.asList("left","right");
+    List<Integer> sizelist = Arrays.asList(150,100,40,30,20);
+    TextView txtl,txtr;
+    public View progressBar1,progressBar2 ;
     public VisualAcuityTestFragment() {
         // Required empty public constructor
     }
@@ -101,7 +132,9 @@ public class VisualAcuityTestFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            checkPermission();
+        }
     }
 
     @Override
@@ -110,6 +143,90 @@ public class VisualAcuityTestFragment extends Fragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         // Inflate the layout for this fragment
         binding = FragmentVisualAcuityTestBinding.inflate(inflater, container, false);
+
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity());
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle params) {
+                Log.i("Speech to text","Ready");
+                if (s==0) {
+                    progressBar1.setVisibility(View.VISIBLE);
+                }
+                else {
+                    progressBar2.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                progressBar1.setVisibility(View.INVISIBLE);
+                progressBar2.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onError(int error) {
+
+            }
+
+            @Override
+            public void onResults(Bundle results) {
+
+                ArrayList<String> data = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                Log.i("Speech to text",data.get(0).toString());
+                if (s==0) {
+                    txtl.setText(data.get(0).toString());
+                    if (data.get(0).toString().equals(iconlist.get(d)))
+                        txtl.append(new String(Character.toChars(0x2714)));
+                    else txtl.append(new String(Character.toChars(0x2716)));
+                    txtr.setText("");
+                }
+                else {
+                    txtr.setText(data.get(0).toString());
+                    if (data.get(0).toString().equals(iconlist.get(d)))
+                        txtr.append(new String(Character.toChars(0x2714)));
+                    else txtr.append(new String(Character.toChars(0x2716)));
+                    txtl.setText("");
+                }
+                progressBar1.setVisibility(View.INVISIBLE);
+                progressBar2.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onPartialResults(Bundle partialResults) {
+
+            }
+
+            @Override
+            public void onEvent(int eventType, Bundle params) {
+
+            }
+        });
+        // setup speechrecognizer intent
+        speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechIntent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speech to text");
+        // reduce the delay of Internet quality
+        speechIntent.putExtra(RecognizerIntent.ACTION_RECOGNIZE_SPEECH,RecognizerIntent.EXTRA_PREFER_OFFLINE);
+
+
 
         bottomNavigationView =  (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
         bottomNavigationView.setVisibility(View.INVISIBLE);
@@ -126,9 +243,15 @@ public class VisualAcuityTestFragment extends Fragment {
 
         imgviewl = binding.leftview;
         imgviewr = binding.rightview;
+        //Textview
+        txtl = binding.txtl;
+        txtr = binding.txtr;
         //Progress Bar
         progressBar1 = binding.processbarl;
         progressBar2 = binding.processbar2;
+        progressBar1.setBackgroundResource(R.drawable.microphoneicon);
+        progressBar2.setBackgroundResource(R.drawable.microphoneicon);
+
         density = ScreenInfo();
 
         chrom = binding.chrono;
@@ -137,39 +260,30 @@ public class VisualAcuityTestFragment extends Fragment {
             public void onChronometerTick(Chronometer chronometer) {
                 cnt= cnt+1;
                 Random r = new Random();
-                //left eye test
-                if(17>cnt && cnt>2) {
-                    imgviewr.setVisibility(View.GONE);
-                    progressBar2.setVisibility(View.GONE);
-                    if (cnt > 2) {
-                        setimage("left", iconlist.get(r.nextInt(4)), 200);
 
+                    if (cnt % 7 ==0) {
+                        progressBar2.setVisibility(View.INVISIBLE);
+                        progressBar1.setVisibility(View.INVISIBLE);
+
+                        s = r.nextInt(2);
+                        d = r.nextInt(4);
+                        sz = r.nextInt(5);
+                        setimage(sidelist.get(s), iconlist.get(d), sizelist.get(sz));
+                        final Handler handle = new Handler();
+                                handle.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        speechRecognizer.startListening( speechIntent);
+//                                        if (s==0) {
+//                                            progressBar1.setVisibility(View.VISIBLE);
+//                                        }
+//                                        else {
+//                                            progressBar2.setVisibility(View.VISIBLE);
+//                                        }
+                                    }
+                                },2000);
                     }
-                    if (cnt > 4) setimage("left", iconlist.get(r.nextInt(4)), 200);
-                    if (cnt > 6) setimage("left", iconlist.get(r.nextInt(4)), 100);
-                    if (cnt > 8) setimage("left", iconlist.get(r.nextInt(4)), 100);
-                    if (cnt > 10) setimage("left", iconlist.get(r.nextInt(4)), 40);
-                    if (cnt > 12) setimage("left", iconlist.get(r.nextInt(4)), 40);
-                    if (cnt > 14) setimage("left", iconlist.get(r.nextInt(4)), 30);
-                    if (cnt > 16) setimage("left", iconlist.get(r.nextInt(4)), 30);
-                }
-                if(cnt>17 && cnt<32){
-                    //right eye test
-                    imgviewr.setVisibility(View.VISIBLE);
-                    progressBar2.setVisibility(View.VISIBLE);
-                    imgviewl.setVisibility(View.GONE);
-                    progressBar1.setVisibility(View.GONE);
-
-                    if ( cnt>18) setimage("right",iconlist.get(r.nextInt(4)),200);
-                    if ( cnt>20) setimage("right",iconlist.get(r.nextInt(4)),200);
-                    if ( cnt>22) setimage("right",iconlist.get(r.nextInt(4)),100);
-                    if ( cnt>24) setimage("right",iconlist.get(r.nextInt(4)),100);
-                    if ( cnt>26) setimage("right",iconlist.get(r.nextInt(4)),40);
-                    if ( cnt>28) setimage("right",iconlist.get(r.nextInt(4)),40);
-                    if ( cnt>30) setimage("right",iconlist.get(r.nextInt(4)),30);
-                    if ( cnt>32) setimage("right",iconlist.get(r.nextInt(4)),30);
-                }
-                setProgress(cnt);
+//                setProgress(cnt);
 
                 Log.i("VAT test","Running:"+cnt);
             }
@@ -203,10 +317,6 @@ public class VisualAcuityTestFragment extends Fragment {
 
     }
 
-    public void SpeechtoText(){
-
-    }
-
     public int getSDK(){
         String manufacturer  = Build.MANUFACTURER;
         String model= Build.MODEL;
@@ -217,18 +327,24 @@ public class VisualAcuityTestFragment extends Fragment {
     }
 
     public void setimage(String side, String direct, int size) {
-        if (side =="left"){
-            switch (direct){
-                case "left":
+        switch (side )
+        {
+            case "left": {
+                imgviewr.setVisibility(View.INVISIBLE);
+                imgviewl.setVisibility(View.VISIBLE);
+
+
+                switch (direct){
+                    case "left":
                     {
                         switch (size){
                             case 200:
-                                {
-                                    imgviewl.setScaleX(1F);
-                                    imgviewl.setScaleY(1F);
-                                    imgviewl.setImageDrawable(iml);
-                                    break;
-                                }
+                            {
+                                imgviewl.setScaleX(1F);
+                                imgviewl.setScaleY(1F);
+                                imgviewl.setImageDrawable(iml);
+                                break;
+                            }
                             case 100:
                             {
                                 imgviewl.setScaleX(0.5F);
@@ -283,7 +399,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "right":
+                    case "right":
                     {
                         switch (size){
                             case 200:
@@ -347,7 +463,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "up":
+                    case "up":
                     {
                         switch (size){
                             case 200:
@@ -411,7 +527,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "down":
+                    case "down":
                     {
                         switch (size){
                             case 200:
@@ -475,7 +591,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "lleft":
+                    case "lleft":
                     {
                         switch (size){
                             case 200:
@@ -539,7 +655,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "hleft":
+                    case "hleft":
                     {
                         switch (size){
                             case 200:
@@ -603,7 +719,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "lright":
+                    case "lright":
                     {
                         switch (size){
                             case 200:
@@ -667,7 +783,7 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                case "hright":
+                    case "hright":
                     {
                         switch (size){
                             case 200:
@@ -731,14 +847,16 @@ public class VisualAcuityTestFragment extends Fragment {
                         }
                         break;
                     }
-                default:
-                    break;
+                    default:
+                        break;
+                }
+                break;
             }
+            case "right":{
+                imgviewl.setVisibility(View.INVISIBLE);
+                imgviewr.setVisibility(View.VISIBLE);
 
 
-        }
-        else{
-            {
                 switch (direct){
                     case "left":
                     {
@@ -1255,16 +1373,42 @@ public class VisualAcuityTestFragment extends Fragment {
                     default:
                         break;
                 }
+                break;
             }
 
+            default: break;
         }
 
     }
     void setProgress(int cnt){
-        progressBar1.setMax(2);
-        progressBar2.setMax(2);
-        progressBar1.setProgress(cnt%2);
-        progressBar2.setProgress(cnt%2);
 
+        Animation animation = new AlphaAnimation(1, 0); //to change visibility from visible to invisible
+        animation.setDuration(1000); //1 second duration for each animation cycle
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE); //repeating indefinitely
+        animation.setRepeatMode(Animation.REVERSE); //animation will start from end point once ended.
+        progressBar1.startAnimation(animation); //to start animation
+        progressBar2.startAnimation(animation); //to start animation
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        speechRecognizer.destroy();
+    }
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.RECORD_AUDIO},RecordAudioRequestCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RecordAudioRequestCode && grantResults.length > 0 ){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(getActivity(),"Permission Granted", Toast.LENGTH_SHORT).show();
+        }
     }
 }

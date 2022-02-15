@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.VisualAcuityFragment">
+    tools:context=".fragments.VisualAcuityFragment"
+    android:layout_margin="5dp">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -14,15 +15,31 @@
     <TextView
         android:id="@+id/txtvatintro"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="qưeftwdgfguhdflkgh" />
+        android:theme="@style/AppTheme"
+        android:text="@string/VATinstruction"
+        android:layout_margin="20dp"
+        />
     <Button
         android:id="@+id/btvatstart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start"
-        android:layout_gravity="center"/>
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:theme="@style/ButtonStyle4"
+        android:text="Monocular Test"
+        android:layout_below="@+id/txtvatintro"
+        android:layout_centerHorizontal="true"/>
 
+    <Button
+        android:id="@+id/btbinostart"
+        android:layout_width="match_parent"
+        android:theme="@style/ButtonStyle4"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:layout_marginVertical="@dimen/cardview_compat_inset_shadow"
+        android:text="Binocular Test"
 
-</FrameLayout>
+        android:layout_below="@+id/btvatstart"
+        />
+</RelativeLayout>

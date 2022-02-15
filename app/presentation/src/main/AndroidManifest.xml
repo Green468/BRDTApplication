@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
 
 
     <application
@@ -18,17 +20,15 @@
         android:theme="@style/Theme.BRDTApplication"
         android:hardwareAccelerated="false"
         android:largeHeap="true"
-
         >
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-
-        >
+            android:name=".ViewActivity"
+            android:screenOrientation="landscape">
         </activity>
 
         <activity
-            android:name=".VideoViewActivity">
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
         </activity>
         <activity
             android:name=".SplashScreenActivity"

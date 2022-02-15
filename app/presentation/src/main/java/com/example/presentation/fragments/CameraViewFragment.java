@@ -101,7 +101,6 @@ public class CameraViewFragment extends Fragment {
         preview.setSurfaceProvider(camview1.getSurfaceProvider());
         preview2.setSurfaceProvider(camview2.getSurfaceProvider());
 
-
         try {
             // Unbind use cases before rebinding
 //            cameraProvider.unbindAll();

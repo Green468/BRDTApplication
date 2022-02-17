@@ -1,5 +1,6 @@
 package com.example.presentation.fragments
 
+import android.annotation.SuppressLint
 import org.json.JSONArray
 import org.json.JSONObject
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,13 +28,14 @@ import at.huber.youtubeExtractor.YtFile
 import com.example.presentation.databinding.FragmentMainBinding
 import com.example.presentation.fragments.MainFragment
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.get
 
 
 //import com.example.presentation.VideoViewActivity;
 class MainFragment : Fragment() {
     private var binding: FragmentMainBinding? = null
     var picker: NumberPicker? = null
-    var pickerVals = arrayOf("50", "20", "100", "0", "100", "20", "50")
+    var pickerVals = arrayOf("0", "1", "2", "-1", "-2")
     var bttstart: Button? = null
     var videolist: ListView? = null
     var adapter: ArrayAdapter<String?>? = null
@@ -44,7 +46,7 @@ class MainFragment : Fragment() {
     var jsonArray: JSONArray? = null
     var jobj: JSONObject? = null
     var jsonbody: String? = null
-    var url: String? = null
+    var ytlink: String? = null
     var videodetail: TextView? = null
     var mToolbar: Toolbar? = null
     var bottomNavigationView: BottomNavigationView? = null
@@ -78,15 +80,17 @@ class MainFragment : Fragment() {
     ): View? {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        //        picker = binding.iotdPicker;
         mToolbar = requireActivity().findViewById<View>(R.id.toolbar_actionbar) as Toolbar
         mToolbar!!.visibility = View.VISIBLE
 
         videolist = binding!!.videoList
         videodetail = binding!!.videoDetail
-        //        picker.setMaxValue(6);
-//        picker.setMinValue(0);
-//        picker.setDisplayedValues(pickerVals);
+
+        picker = binding!!.iotdsel
+        picker!!.setMaxValue(pickerVals.size-1);
+        picker!!.setMinValue(0);
+        picker!!.setDisplayedValues(pickerVals);
+
         val path =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath
 
@@ -159,17 +163,16 @@ class MainFragment : Fragment() {
         videolist!!.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             link = parent.getItemAtPosition(position) as String
             try {
-                videodetail!!.text =
-                    "Time:" + jsonArray!!.getJSONObject(position)["current_time"].toString() + "/n" +
-                            "Duration:" + jsonArray!!.getJSONObject(position)["time"].toString() + "/n" +
-                            "Feedback:"
-                url = jsonArray!!.getJSONObject(position)["url"].toString()
+//                videodetail!!.text =
+//                    "Time:" + jsonArray!!.getJSONObject(position)["current_time"].toString() + "/n" +
+//                            "Duration:" + jsonArray!!.getJSONObject(position)["time"].toString() + "/n" +
+//                            "Feedback:"
+                ytlink = jsonArray!!.getJSONObject(position)["url"].toString()
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
 
-//                iotd = pickerVals[picker.getValue()];
-            Log.i("Select:", link!!)
+            Log.i("Select:", link!! +" "+ ytlink )
         }
         return binding!!.root
     }
@@ -178,33 +181,55 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding!!.btStartview.setOnClickListener {
             val intent = Intent(activity, ViewActivity::class.java)
-//            val reallink = loadYoutube("https://youtu.be/K2fkCcjzBrQ")
-            intent.putExtra("link", "https://youtu.be/K2fkCcjzBrQ")
-            startActivity(intent)
+//            ytlink = "https://youtu.be/vCKCkc8llaM"
+            var reallink:String? = null
+            if (ytlink!=null) {
+                 reallink = loadYoutube(ytlink!!)
+//                reallink = "https://iotd.terasoftvn.com/protectedVideos/video001.mp4"
 
-            Log.i("Mainview:", "startvideo")
+            }else {
+                Toast.makeText(activity, "Please select video!", Toast.LENGTH_LONG).show()
+
+            }
+            if (reallink!=null){
+                intent.putExtra("videolist",(activity as MainActivity?)!!.videolist )
+                intent.putExtra("link", reallink)
+                intent.putExtra("iotd", pickerVals.get(picker!!.value))
+                startActivity(intent)
+
+                Log.i("Mainview:", "startvideo")
+            }
+            else{
+                Toast.makeText(activity, "No video found!", Toast.LENGTH_LONG).show()
+            }
+
         }
         bottomNavigationView =
             requireActivity().findViewById<View>(R.id.bottom_navigation) as BottomNavigationView
         bottomNavigationView!!.visibility = View.VISIBLE
     }
 
-    private fun loadYoutube(url: String): String? {
+    private fun loadYoutube(link: String): String? {
+        val youtubeLink = "https://youtu.be/6VjF638VObA"
         val mediaurl = arrayOf<String?>(null)
-        object : YouTubeExtractor(requireActivity()) {
+        object : YouTubeExtractor(activity as MainActivity) {
+            @SuppressLint("StaticFieldLeak")
             public override fun onExtractionComplete(
-                ytFiles: SparseArray<YtFile>,
-                vMeta: VideoMeta
+                ytFiles: SparseArray<YtFile>?,
+                vMeta: VideoMeta?
             ) {
                 if (ytFiles != null) {
                     isexit = 1
                     val itag = 22
                     val downloadUrl = ytFiles[itag].url
-                    Log.i("youtubeplayer:", "Opening$downloadUrl")
+                    val i = Log.i("youtubeplayer:", "Opening$downloadUrl")
                     mediaurl[0] = downloadUrl
+                }else{
+                    return;
                 }
+
             }
-        }.extract(url, true, true)
+        }.extract(link, false, false)
         return mediaurl[0]
     }
 

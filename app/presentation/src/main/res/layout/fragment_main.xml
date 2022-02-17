@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp">
+    <NumberPicker
+        android:id="@+id/iotdsel"
 
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/bt_Startview"
+        app:layout_constraintTop_toBottomOf="@id/video_detail"
+        android:layout_margin="20dp"/>
     <ListView
         android:id="@+id/video_list"
         android:layout_width="match_parent"
@@ -36,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@id/video_list"
         android:layout_margin="5dp"
         />
+
     <Button
         android:id="@+id/bt_Startview"
         android:layout_width="wrap_content"

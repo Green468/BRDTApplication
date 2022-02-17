@@ -47,7 +47,7 @@ class StereoIotdCameraView(val lifecycleOwner: LifecycleOwner, context: Context,
 
     class VideoRenderer(val lifecycleOwner: LifecycleOwner, val context: Context, val getDeviceRotation: IGetDeviceRotation) : GLSurfaceView.Renderer, SurfaceTexture.OnFrameAvailableListener {
         private val TAG = "VideoRender"
-        var iotd:Int = 1
+        var iotd:Int =0
         private val FLOAT_SIZE_BYTES = 4
         private val TRIANGLE_VERTICES_DATA_STRIDE_BYTES = 5 * FLOAT_SIZE_BYTES
         private val TRIANGLE_VERTICES_DATA_POS_OFFSET = 0
@@ -275,7 +275,7 @@ class StereoIotdCameraView(val lifecycleOwner: LifecycleOwner, context: Context,
             val mvpMatrix = if (isRight) mMVPMatrixRight else mMVPMatrix
 
             //videoRenderProgram.render(buffer, mvpMatrix, mTextureID)
-            val textureId = if (isRight) textureBufferQueue.getTexture(iotd) else textureBufferQueue.getTexture(0)
+            val textureId = if (isRight) textureBufferQueue.getTexture(if(iotd>0) iotd else 0) else textureBufferQueue.getTexture(if(iotd<0) iotd else 0)
             textureRenderProgram.render(buffer, mvpMatrix, textureId)
         }
 

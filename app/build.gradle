@@ -69,4 +69,5 @@ dependencies {
 // for implement YourtubeExtractor
 
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v2.0.0'
 }

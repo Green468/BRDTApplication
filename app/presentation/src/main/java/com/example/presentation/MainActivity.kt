@@ -88,6 +88,8 @@ class MainActivity : AppCompatActivity() {
         // Receive mess from other activity
         var tag: String? = ""
         tag = intent.getStringExtra("fragment");
+        videolist = intent.getStringExtra("videolist");
+
         when (tag) {
             "6" -> {
                 displayView(6)

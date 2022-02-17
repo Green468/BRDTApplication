@@ -5,8 +5,9 @@ dependencyResolutionManagement {
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
         maven {
-            url "https://jitpack.io"
+            url "https://www.jitpack.io"
         }
+
     }
 }
 rootProject.name = "BRDT Application"
@@ -14,3 +15,4 @@ include ':app'
 include ':app:data'
 include ':app:presentation'
 include ':app:domain'
+include ':sampleApp', ':youtubeExtractor', ':advancedDownloader'

@@ -14,10 +14,6 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
-import android.view.Surface
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.TextView
@@ -31,8 +27,10 @@ import com.green.stereovideodemo.StereoIotdVideoView
 import java.text.DecimalFormat
 import android.os.Bundle as Bundle1
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.FragmentManager
 import com.example.presentation.fragments.VisualAcuityTestFragment
+import java.util.logging.Level.parse
 
 
 lateinit var staticMediaPlayer: MediaPlayer
@@ -46,9 +44,9 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
     )
     //inter pupil distance
     val ipd : Float? = 63F
-    val w : Float?  = 65F
+    val w : Float?  = 60F
     var curposition: Int = 0
-    var videoSource = ""
+    var videoSource = "https://iotd.terasoftvn.com/protectedVideos/video001.mp4"
     var dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).absolutePath
 
     private var speechRecognizer: SpeechRecognizer? = null
@@ -56,7 +54,8 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
     var txtview: TextView? = null
     var layout:FrameLayout? = null
     var videoUri = Uri.parse(videoSource)
-
+    var iotd:String? = null
+    var videolist:String? = null
     val rootView:ViewGroup by lazy { findViewById(android.R.id.content) }
     val mediaPlayer: MediaPlayer by lazy {
 
@@ -82,8 +81,17 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
         val extras = intent.extras
         if (extras!=null) {
             var url:String = extras.getString("link").toString()
+            iotd = extras.getString("iotd").toString()
+            videolist = extras.getString("videolist").toString()
             videoSource = url;
-            videoUri = Uri.parse("https://iotd.terasoftvn.com/protectedVideos/video001.mp4")
+            if (videoSource!=null) {
+                videoUri = Uri.parse(videoSource)
+            }
+            else{
+                Log.e(this.toString(),"No URL found")
+                Toast.makeText(this, "No video found!", Toast.LENGTH_LONG).show()
+                finish()
+            }
         }
 //
         ActivityCompat.requestPermissions(
@@ -124,7 +132,6 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
             override fun onEndOfSpeech() {
             }
             override fun onError(error: Int) {
-                speechRecognizer?.startListening(speechIntent)
 
             }
             override fun onResults(results: Bundle1) {
@@ -136,10 +143,24 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
                         changetoVideo()
                         if (mediaPlayer!=null){
                             mediaPlayer.seekTo(curposition)
-                            mediaPlayer.start()
+//                            mediaPlayer.start()
+                        }
+                    }
+                    "비디오" -> {
+                        changetoVideo()
+                        if (mediaPlayer!=null){
+                            mediaPlayer.seekTo(curposition)
+//                            mediaPlayer.start()
                         }
                     }
                     "camera" -> {
+                        changetoCam()
+                        if (mediaPlayer!=null){
+                            mediaPlayer.pause()
+                            curposition =mediaPlayer.currentPosition
+                        }
+                    }
+                    "카메라" -> {
                         changetoCam()
                         if (mediaPlayer!=null){
                             mediaPlayer.pause()
@@ -154,11 +175,25 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
                         speechRecognizer!!.destroy()
                         val i = Intent(this@ViewActivity, MainActivity::class.java)
                         i.putExtra("fragment","6");
+                        i.putExtra("videolist",videolist);
+                        startActivity(i)
+                    }
+                    "스탑" -> {
+                        if (mediaPlayer!=null){
+                            mediaPlayer.stop()
+                        }
+                        speechRecognizer!!.stopListening()
+                        speechRecognizer!!.destroy()
+                        val i = Intent(this@ViewActivity, MainActivity::class.java)
+                        i.putExtra("fragment","6");
+                        i.putExtra("videolist",videolist);
                         startActivity(i)
                     }
                     "test" ->{
                         if (mediaPlayer!=null){
                             mediaPlayer.pause()
+                            curposition =mediaPlayer.currentPosition
+
                         }
                         speechRecognizer!!.stopListening()
                         if(savedInstanceState == null) { // initial transaction should be wrapped like this
@@ -170,7 +205,6 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
                     }
                     else -> Log.i("Speech to text", data!![0].toString())
                 }
-//                speechRecognizer?.startListening(speechIntent)
 
             }
 
@@ -191,7 +225,7 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
             RecognizerIntent.EXTRA_PREFER_OFFLINE
         )
 
-        speechRecognizer!!.startListening(speechIntent)
+//        speechRecognizer!!.startListening(speechIntent)
 
     }
 
@@ -225,21 +259,15 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
         stereoVideoView = StereoIotdVideoView(this, mediaPlayer).apply {
 //        stereoVideoView = StereoIotdCameraView(this, this, this).apply{
             layoutParams =  ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            setIotdValue(0)
+            iotd?.let { setIotdValue(it.toInt()) }
         }
-//            stereoVideoView = StereoIotdVideoView(this, mediaPlayer).apply {
-//            layoutParams =  ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-//            setIotdValue(0)
+        iotd?.let { Log.i("IOTD:", it) }
+
 //        }
 
         updateVideoAttributes()
         layout?.addView(stereoVideoView as View)
 
-//        textureView = TextureView(this)
-//        var layoutParam = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-//        textureView.layoutParams = layoutParam
-//        textureView.surfaceTextureListener = this
-//        findViewById<FrameLayout>(R.id.frm_video).addView(textureView as View)
     }
 
     class SeekBarChangedListener(val cb: (Int) -> Unit): SeekBar.OnSeekBarChangeListener {
@@ -258,8 +286,10 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
         layout?.removeAllViews()
         stereoVideoView = StereoIotdCameraView(this, this, this).apply{
             layoutParams =  ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            setIotdValue(0)
+            iotd?.toInt()?.let { setIotdValue(it) }
         }
+        iotd?.let { Log.i("Cam IOTD:", it) }
+
         updateVideoAttributes()
         layout?.addView(stereoVideoView as View)
         speechRecognizer?.startListening(speechIntent)
@@ -269,7 +299,9 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
         layout?.removeAllViews()
         stereoVideoView = StereoIotdVideoView(this, mediaPlayer).apply {
             layoutParams =  ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            setIotdValue(0)
+            iotd?.let { setIotdValue(it.toInt()) }
+            iotd?.let { Log.i("Video IOTD:", it) }
+
         }
         updateVideoAttributes()
         layout?.addView(stereoVideoView as View)
@@ -325,19 +357,65 @@ class ViewActivity : AppCompatActivity(), IGetDeviceRotation, TextureView.Surfac
 
     override fun onPause() {
         super.onPause()
-        if (mediaPlayer != null) {
-            mediaPlayer.pause();
-        }
+//        if (mediaPlayer != null) {
+//            mediaPlayer.pause();
+//        }
         speechRecognizer!!.stopListening()
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mediaPlayer != null) {
-            mediaPlayer.pause();
-        }
+//        if (mediaPlayer != null) {
+//            mediaPlayer.pause();
+//        }
         speechRecognizer!!.stopListening()
+
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // This is the center button for headphones
+        if (event != null) {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_HEADSETHOOK) {
+                speechRecognizer?.startListening(speechIntent)
+                Toast.makeText(this, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            if (event.getKeyCode() == KeyEvent.ACTION_DOWN) {
+                speechRecognizer?.startListening(speechIntent)
+                Toast.makeText(this, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+//        if (event != null) {
+//            if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN) {
+//                changetoCam()
+//                if (mediaPlayer!=null){
+//                    mediaPlayer.pause()
+//                    curposition =mediaPlayer.currentPosition
+//                }
+//
+//                Toast.makeText(this, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        }
+//        if (event != null) {
+//            if (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP) {
+//                changetoVideo()
+//                if (mediaPlayer!=null){
+//                    mediaPlayer.seekTo(curposition)
+//                    mediaPlayer.start()
+//                }
+//                Toast.makeText(this, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onBackPressed() {
+        mediaPlayer.stop()
+        super.onBackPressed()
 
     }
 }
